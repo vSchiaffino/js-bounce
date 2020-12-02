@@ -11,7 +11,12 @@ export default class Player extends Obstacle{
     }
 
     Collide(ball) {
-        ball.ang = hCollide(ball.ang)
+        let pos_central = this.x + this.w / 2
+        let diff_pos = pos_central - ball.x
+        let porc_diff = diff_pos * 100 / (this.w / 2)
+        let ang = porc_diff * 60 / 100
+        console.log("quedo: ", ang)
+        ball.ang = 0 - ang
     }
 
     Draw(ctx){
