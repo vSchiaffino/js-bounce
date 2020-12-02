@@ -1,6 +1,6 @@
 import { MAP_HEIGHT, MAP_WIDTH } from "./constants.js";
 import Obstacle from "./obstacle.js";
-import { hCollide, wCollide } from './trigonometria.js'
+import { hCollide, lineCircle, wCollide } from './trigonometria.js'
 
 export default class Block extends Obstacle{
     constructor(x, y) {
@@ -21,13 +21,33 @@ export default class Block extends Obstacle{
     }
 
     Collide(ball) {
+        let points = [
+            {x: this.x, y: this.y},
+            {x: this.x + this.w, y: this.y},
+            {x: this.x + this.w, y: this.y + this.h},
+            {x: this.x, y: this.y + this.h},
+        ]
         // detecting if h o w collide
-        if(ball.y > this.y && this.y + this.h < ball.y){
+        if( lineCircle({p1: points[0], p2: points[1]}, ball) || 
+            lineCircle({p1: points[2], p2: points[3]}, ball) )
+        {
+            console.log("collision h: entra: ", ball.ang)
             ball.ang = hCollide(ball.ang)
+            console.log("sale: ", ball.ang)
         }
         else{
+            console.log("collision w: entra: ", ball.ang)
             ball.ang = wCollide(ball.ang)
+            console.log("sale: ", ball.ang)
         }
+
+
+
+        // if(ball.y > this.y && this.y + this.h < ball.y){
+        // }
+        // else{
+        //     ball.ang = wCollide(ball.ang)
+        // }
         this.Destroy()
     }
 
