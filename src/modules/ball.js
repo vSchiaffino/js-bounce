@@ -27,7 +27,7 @@ export default class Ball{
             this.y += mov_y
             // limites
             if(this.y + this.r>= window.innerHeight){
-                this.Destroy()
+                this.Die()
             }
             if(this.x + this.r >= window.innerWidth || 
                 this.x - this.r <= 0){
@@ -66,7 +66,7 @@ export default class Ball{
         fillCircle(this.x, this.y, this.r, "green", ctx)
     }
 
-    Destroy(){
+    Die(){
         this.alive = false;
     }
 

@@ -112,4 +112,12 @@ export function lineCircle(line, circle) {
     let distance = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2))
     return distance <= circle.r
 }
+
+export function rectRect(rect, rect1) {
+    return rect.x + rect.w >= rect1.x && 
+           rect.x <= rect1.x + rect1.w &&
+           rect.y <= rect1.y + rect1.h &&
+           rect.y + rect.h >= rect1.y
+
+}
 //#endregion

@@ -6,6 +6,7 @@ import Player from './modules/player.js'
 var player;
 var balls = [];
 var map = [];
+var upgrades = [];
 var canvas;
 
 
@@ -52,6 +53,9 @@ function Update(){
         obs = obs.flat()
         ball.Update(player, obs)
     })
+    upgrades.forEach(u => {
+        u.Update(player)
+    })
     // draws
     balls.forEach(ball => {
         ball.Draw(ctx)
@@ -59,15 +63,40 @@ function Update(){
     map.forEach(block => {
         block.Draw(ctx)
     })
+    upgrades.forEach(u => {
+        u.Draw(ctx)
+    })
     player.Draw(ctx)
+
     // garbage collector
+    // balls
     balls = balls.filter(ball => ball.isAlive())
-    map = map.filter(block => block.isAlive())
+    // blocks
+    map = map.filter(block => {
+        if(block.isAlive())
+            return true
+        else{
+            block.Destroy(map, upgrades)
+            return false
+        }
+    })
+    // Upgrades
+    upgrades = upgrades.filter(upgrade => {
+        if(upgrade.isAlive()){
+            return true
+        }
+        else{
+            upgrade.Destroy(player)
+            return false
+        }
+    })
+    // Game state
     if(balls.length <= 0) {
         player.Die()
         balls.push(new Ball())
     }
     if(!player.isAlive()) {
+        player.Init()
         makeMap()
     }
 

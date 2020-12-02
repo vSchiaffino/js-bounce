@@ -3,10 +3,14 @@ import Obstacle from "./obstacle.js"
 export default class Player extends Obstacle{
     constructor(){
         super()
-        this.lifes = 3
-        this.setDefaultPos()
         this.w = 100
         this.h = 20
+        this.Init()
+    }
+
+    Init() {
+        this.lifes = 3
+        this.setDefaultPos()
     }
 
     setDefaultPos(){
@@ -44,7 +48,19 @@ export default class Player extends Obstacle{
         if(mouse.x < 0) mouse.x = 0;
         if(mouse.x + this.w > window.innerWidth) mouse.x = window.innerWidth - this.w;
         if(mouse.x >= 0 && mouse.x + this.w <= window.innerWidth){
-            this.x = mouse.x
+            this.x = mouse.x - this.w / 2
         }
+    }
+
+    // Power ups
+    Extend_pu(){
+        let n = 20
+        
+        this.w += n
+        this.x -= n / 2
+    }
+
+    Life_pu(){
+        this.lifes += 1
     }
 }

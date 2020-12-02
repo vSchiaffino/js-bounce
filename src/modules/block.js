@@ -1,10 +1,13 @@
 import { MAP_HEIGHT, MAP_WIDTH } from "./constants.js";
 import Obstacle from "./obstacle.js";
 import { hCollide, lineCircle, wCollide } from './trigonometria.js'
+import Upgrade from "./upgrade.js";
 
 export default class Block extends Obstacle{
     constructor(x, y) {
         super()
+        this.map_x = x
+        this.map_y = y
         this.w = window.innerWidth / MAP_WIDTH
         this.h = window.innerHeight / MAP_HEIGHT
 
@@ -31,31 +34,25 @@ export default class Block extends Obstacle{
         if( lineCircle({p1: points[0], p2: points[1]}, ball) || 
             lineCircle({p1: points[2], p2: points[3]}, ball) )
         {
-            console.log("collision h: entra: ", ball.ang)
             ball.ang = hCollide(ball.ang)
-            console.log("sale: ", ball.ang)
         }
         else{
-            console.log("collision w: entra: ", ball.ang)
             ball.ang = wCollide(ball.ang)
-            console.log("sale: ", ball.ang)
         }
-
-
-
-        // if(ball.y > this.y && this.y + this.h < ball.y){
-        // }
-        // else{
-        //     ball.ang = wCollide(ball.ang)
-        // }
-        this.Destroy()
+        this.Die()
     }
 
     isAlive(){
         return this.alive
     }
 
-    Destroy(){
+    Destroy(map, upgrades){
+        if(Math.random() * 5 >= 4){
+            upgrades.push(new Upgrade({x: this.x + this.w / 2, y: this.y + this.h / 2}))
+        }
+    }
+
+    Die(){
         this.alive = false
     }
 }
