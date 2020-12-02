@@ -29,7 +29,9 @@ function Start(){
 }
 
 function makeMap(){
-    map = map.filter(e => false)
+    for (let i = 0; i < map.length; i++) {
+        map.pop()
+    }
     for (let i = 0; i < MAP_WIDTH; i++) {
         for (let j = 0; j < 10; j++) {
             map.push(new Block(i, j))
@@ -55,7 +57,7 @@ function Update(){
         ball.Draw(ctx)
     })
     map.forEach(block => {
-            block.Draw(ctx)
+        block.Draw(ctx)
     })
     player.Draw(ctx)
     // garbage collector
