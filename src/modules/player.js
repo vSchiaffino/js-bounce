@@ -1,13 +1,17 @@
 import Obstacle from "./obstacle.js"
-import { hCollide } from "./trigonometria.js"
 
 export default class Player extends Obstacle{
     constructor(){
         super()
-        this.x = window.innerWidth / 2
-        this.y = window.innerHeight - 50
+        this.lifes = 3
+        this.setDefaultPos()
         this.w = 100
         this.h = 20
+    }
+
+    setDefaultPos(){
+        this.x = window.innerWidth / 2
+        this.y = window.innerHeight - 50
     }
 
     Collide(ball) {
@@ -15,13 +19,21 @@ export default class Player extends Obstacle{
         let diff_pos = pos_central - ball.x
         let porc_diff = diff_pos * 100 / (this.w / 2)
         let ang = porc_diff * 60 / 100
-        console.log("quedo: ", ang)
         ball.ang = 0 - ang
     }
 
     Draw(ctx){
         ctx.fillStyle = "black"
         ctx.fillRect(this.x, this.y, this.w, this.h)
+    }
+
+    Die() {
+        this.lifes -= 1
+        this.setDefaultPos()
+    }
+
+    isAlive() {
+        return !(this.lifes <= 0)
     }
 
     Update(obstacles){
