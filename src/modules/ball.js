@@ -1,3 +1,4 @@
+import { BALL_ACELLERATION } from "./constants.js"
 import { fillCircle } from "./draws.js"
 import { circleRect, descomponerMov, hCollide, wCollide } from'./trigonometria.js'
 
@@ -48,6 +49,7 @@ export default class Ball{
     }
 
     Colision(collider, backup_x, backup_y){
+        this.vel += BALL_ACELLERATION
         if (collider === "h"){
             this.ang = hCollide(this.ang)
         }

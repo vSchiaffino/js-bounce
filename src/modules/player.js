@@ -46,8 +46,8 @@ export default class Player extends Obstacle{
 
     Move(mouse){
         if(mouse.x < 0) mouse.x = 0;
-        if(mouse.x + this.w > window.innerWidth) mouse.x = window.innerWidth - this.w;
-        if(mouse.x >= 0 && mouse.x + this.w <= window.innerWidth){
+        if(mouse.x + this.w / 2 > window.innerWidth) mouse.x = window.innerWidth - this.w / 2;
+        if(mouse.x >= 0 && mouse.x + this.w / 2 <= window.innerWidth){
             this.x = mouse.x - this.w / 2
         }
     }
