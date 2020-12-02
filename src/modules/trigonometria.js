@@ -74,12 +74,12 @@ export function linePoint(line, point){
     let dy = Math.abs(line.p1.y - line.p2.y)
     let d = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2))
 
-    let d1x = Math.abs(line.p1.x - circle.x)
-    let d1y = Math.abs(line.p1.y - circle.y)
+    let d1x = Math.abs(line.p1.x - point.x)
+    let d1y = Math.abs(line.p1.y - point.y)
     let d1 = Math.sqrt(Math.pow(d1x, 2) + Math.pow(d1y, 2))
 
-    let d2x = Math.abs(line.p2.x - circle.x)
-    let d2y = Math.abs(line.p2.y - circle.y)
+    let d2x = Math.abs(line.p2.x - point.x)
+    let d2y = Math.abs(line.p2.y - point.y)
     let d2 = Math.sqrt(Math.pow(d2x, 2) + Math.pow(d2y, 2))
 
     return d1 + d2 == d
@@ -89,7 +89,7 @@ export function pointCircle(point, circle) {
     let dx = Math.abs(point.x - circle.x)
     let dy = Math.abs(point.y - circle.y)
     let d = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2))
-    return d <= r
+    return d <= circle.r
 }
 
 export function lineCircle(line, circle) {
