@@ -120,4 +120,35 @@ export function rectRect(rect, rect1) {
            rect.y + rect.h >= rect1.y
 
 }
+
+export function polyPoint(poly, point) {
+    let collision = false;
+    let next = 0;
+    poly.forEach(current => {
+        next += 1
+        if (next == len(poly)) 
+            next = 0;
+        let vc = poly[current]
+        let vn = poly[next]
+        let [px, py] = point;
+        if((((vc[1] >= py && vn[1] < py) || (vc[1] < py && vn[1] >= py)) && (px < (vn[0] - vc[0]) * (py - vc[1]) / (vn[1] - vc[1]) + vc[0])) )
+            current = !current
+    });
+    return collision
+}
+
+export function polyCircle(poly, circle){
+    if (polyPoint(poly, circle.x, circle.y))
+        return true;
+    for (let i = 0; i < poly.length; i++) {
+        let next = i + 1;
+        if (next == poly.length)
+            next = 0;
+        let cp = poly[i]
+        let np = poly[next]
+        if(lineCircle({p1: cp, p2: np}, circle))
+            return true
+    }
+    return false
+}
 //#endregion

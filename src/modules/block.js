@@ -6,6 +6,7 @@ import Upgrade from "./upgrade.js";
 export default class Block extends Obstacle{
     constructor(x, y) {
         super()
+        this.shape = "poly"
         this.map_x = x
         this.map_y = y
         this.w = window.innerWidth / MAP_WIDTH
@@ -14,8 +15,17 @@ export default class Block extends Obstacle{
         this.x = x * this.w
         this.y = y * this.h
 
-        this.hp = 2
+        this.hp = 1
         this.alive = true
+    }
+
+    GetPoints(){
+        return [
+            {x: this.x, y: this.y},
+            {x: this.x + this.w, y: this.h},
+            {x: this.x + this.w, y: this.y + this.h},
+            {x: this.x, y: this.y + this.h},
+        ]
     }
 
     Draw(ctx){
@@ -25,7 +35,7 @@ export default class Block extends Obstacle{
         ctx.strokeRect(this.x, this.y, this.w, this.h)
     }
 
-    Collide(ball) {
+    Collide(ball, type) {
         let points = [
             {x: this.x, y: this.y},
             {x: this.x + this.w, y: this.y},
@@ -33,8 +43,7 @@ export default class Block extends Obstacle{
             {x: this.x, y: this.y + this.h},
         ]
         // detecting if h o w collide
-        if( lineCircle({p1: points[0], p2: points[1]}, ball) || 
-            lineCircle({p1: points[2], p2: points[3]}, ball) )
+        if( type === "h")
         {
             ball.ang = hCollide(ball.ang)
         }

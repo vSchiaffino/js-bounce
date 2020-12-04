@@ -5,6 +5,7 @@ export default class Player extends Obstacle{
         super()
         this.w = 100
         this.h = 20
+        this.shape = "rect"
         this.Init()
     }
 

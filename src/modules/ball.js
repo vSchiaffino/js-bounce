@@ -1,6 +1,6 @@
 import { BALL_ACELLERATION } from "./constants.js"
 import { fillCircle } from "./draws.js"
-import { circleRect, descomponerMov, hCollide, wCollide } from'./trigonometria.js'
+import { circleRect, descomponerMov, hCollide, lineCircle, wCollide } from'./trigonometria.js'
 
 export default class Ball{
     constructor(){
@@ -41,14 +41,33 @@ export default class Ball{
             // colliders
             for (let i = 0; i < obstacles.length; i++) {
                 const ob = obstacles[i];
-                if(circleRect(this, ob)) {
-                    this.Colision(ob, backup_x, backup_y);
+                if(ob.shape === "poly"){
+                    let points = ob.GetPoints()
+                    let actual = 0;
+                    points.forEach(point => {
+                        let next = actual + 1;
+                        next = next === points.length ? 0 : next
+                        let next_p = points[next]
+                        if(lineCircle({p1: point, p2: next_p}, this)){
+                            let type = actual === 0 || actual === 2 ? "h" : "w"
+                            this.Colision(ob, backup_x, backup_y, type)
+                        }
+                        ++actual;
+                    });
+                    if(circleRect(this, ob)) {
+                        this.Colision(ob, backup_x, backup_y);
+                    }
+                }
+                else if(ob.shape === "rect"){
+                    if(circleRect(this, ob)) {
+                        this.Colision(ob, backup_x, backup_y);
+                    }
                 }
             }
         }
     }
 
-    Colision(collider, backup_x, backup_y){
+    Colision(collider, backup_x, backup_y, type){
         this.vel += BALL_ACELLERATION
         if (collider === "h"){
             this.ang = hCollide(this.ang)
@@ -58,7 +77,7 @@ export default class Ball{
         }
         else {
             // Player o obstaculo
-            collider.Collide(this)
+            collider.Collide(this, type)
         }
         this.x = backup_x
         this.y = backup_y
