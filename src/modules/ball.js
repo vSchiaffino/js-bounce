@@ -19,52 +19,66 @@ export default class Ball{
             this.y = player.y - this.r
         }
         else{
-            let backup_x = this.x
-            let backup_y = this.y
-            // movement
-            let mov = descomponerMov(this.vel, this.ang)
-            let [mov_x, mov_y] = mov
-            this.x += mov_x
-            this.y += mov_y
-            // limites
-            if(this.y + this.r>= window.innerHeight){
-                this.Die()
-            }
-            if(this.x + this.r >= window.innerWidth || 
-                this.x - this.r <= 0){
-                    this.Colision("w", backup_x, backup_y)
+            let parts = Math.floor(this.vel)
+            let colisiono = false;
+            for (let i = 0; i < parts; i++) {
+                const movt = this.vel / parts
+                let backup_x = this.x
+                let backup_y = this.y
+                // movement
+                let mov = descomponerMov(movt, this.ang)
+                let [mov_x, mov_y] = mov
+                this.x += mov_x
+                this.y += mov_y
+                // limites
+                if(this.y + this.r>= window.innerHeight){
+                    this.Die()
+                    colisiono = true
                 }
-            else if(this.y - this.r <= 0 )
-            {
-                this.Colision("h", backup_x, backup_y)
-            }
-            // colliders
-            for (let i = 0; i < obstacles.length; i++) {
-                const ob = obstacles[i];
-                if(ob.shape === "poly"){
-                    let points = ob.GetPoints()
-                    let actual = 0;
-                    points.forEach(point => {
-                        let next = actual + 1;
-                        next = next === points.length ? 0 : next
-                        let next_p = points[next]
-                        if(lineCircle({p1: point, p2: next_p}, this)){
-                            let type = actual === 0 || actual === 2 ? "h" : "w"
-                            this.Colision(ob, backup_x, backup_y, type)
+                if(this.x + this.r >= window.innerWidth || 
+                    this.x - this.r <= 0){
+                        this.Colision("w", backup_x, backup_y)
+                        colisiono = true
+                    }
+                else if(this.y - this.r <= 0 )
+                {
+                    this.Colision("h", backup_x, backup_y)
+                    colisiono = true
+                }
+                // colliders
+                for (let i = 0; i < obstacles.length; i++) {
+                    const ob = obstacles[i];
+                    if(ob.shape === "poly"){
+                        let points = ob.GetPoints()
+                        let actual = 0;
+                        points.forEach(point => {
+                            let next = actual + 1;
+                            next = next === points.length ? 0 : next
+                            let next_p = points[next]
+                            if(lineCircle({p1: point, p2: next_p}, this)){
+                                let type = actual === 0 || actual === 2 ? "h" : "w"
+                                this.Colision(ob, backup_x, backup_y, type)
+                                colisiono = true
+                            }
+                            ++actual;
+                        });
+                        if(circleRect(this, ob)) {
+                            this.Colision(ob, backup_x, backup_y);
+                            colisiono = true
                         }
-                        ++actual;
-                    });
-                    if(circleRect(this, ob)) {
-                        this.Colision(ob, backup_x, backup_y);
+                    }
+                    else if(ob.shape === "rect"){
+                        if(circleRect(this, ob)) {
+                            this.Colision(ob, backup_x, backup_y);
+                            colisiono = true
+                        }
                     }
                 }
-                else if(ob.shape === "rect"){
-                    if(circleRect(this, ob)) {
-                        this.Colision(ob, backup_x, backup_y);
-                    }
-                }
+                if(colisiono)
+                    break
             }
-        }
+                
+            }
     }
 
     Colision(collider, backup_x, backup_y, type){

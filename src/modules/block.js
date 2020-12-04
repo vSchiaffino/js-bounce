@@ -36,12 +36,6 @@ export default class Block extends Obstacle{
     }
 
     Collide(ball, type) {
-        let points = [
-            {x: this.x, y: this.y},
-            {x: this.x + this.w, y: this.y},
-            {x: this.x + this.w, y: this.y + this.h},
-            {x: this.x, y: this.y + this.h},
-        ]
         // detecting if h o w collide
         if( type === "h")
         {
