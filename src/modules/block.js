@@ -13,6 +13,8 @@ export default class Block extends Obstacle{
 
         this.x = x * this.w
         this.y = y * this.h
+
+        this.hp = 2
         this.alive = true
     }
 
@@ -39,7 +41,10 @@ export default class Block extends Obstacle{
         else{
             ball.ang = wCollide(ball.ang)
         }
-        this.Die()
+        --this.hp;
+        if(this.hp <= 0){
+            this.Die()
+        }
     }
 
     isAlive(){
