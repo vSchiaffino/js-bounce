@@ -41,6 +41,13 @@ function makeMap(){
     }
 }
 
+function MakeObstacles(){
+    let obs = [player]
+    obs = obs.concat(map.flat())
+    obs = obs.flat()
+    return obs
+}
+
 function Update(){
     ResizeCanvas()
     let ctx = canvas.getContext("2d")
@@ -48,11 +55,9 @@ function Update(){
     ctx.fillStyle = "white"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     // updates
+    player.Update(MakeObstacles())
     balls.forEach(ball => {
-        let obs = [player]
-        obs = obs.concat(map.flat())
-        obs = obs.flat()
-        ball.Update(player, obs)
+        ball.Update(player, MakeObstacles())
     })
     upgrades.forEach(u => {
         u.Update(player)

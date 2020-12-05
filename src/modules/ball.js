@@ -24,8 +24,7 @@ export default class Ball{
 
     Update(player, obstacles){
         if(this.attached){
-            this.x = player.x + player.w / 2
-            this.y = player.y - this.r
+            
         }
         else{
             let parts = Math.floor(this.vel)

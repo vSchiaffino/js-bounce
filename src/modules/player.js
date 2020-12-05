@@ -13,6 +13,12 @@ export default class Player extends Obstacle{
         this.Init()
     }
 
+    getMiddlePos(circle){
+        let x = this.x + this.w / 2
+        let y = this.y - circle.r
+        return {x, y}
+    }
+
     click(){
         this.attachedBalls.forEach(b => {
             this.attachedBalls.pop()
@@ -69,7 +75,11 @@ export default class Player extends Obstacle{
     }
 
     Update(obstacles){
-
+        this.attachedBalls.forEach(b => {
+            let mp = this.getMiddlePos(b)
+            b.x = mp.x
+            b.y = mp.y
+        })
     }
 
     Move(mouse){
