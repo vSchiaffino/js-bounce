@@ -7,7 +7,7 @@ export default class Ball{
         this.alive = true
         this.ang = 30
         this.vel = 9
-        this.x = 0
+        this.x = innerWidth / 2
         this.y = 0
         this.r = 5
 

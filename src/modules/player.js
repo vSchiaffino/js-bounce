@@ -6,7 +6,7 @@ export default class Player extends Obstacle{
         this.w = 100
         this.h = 20
         this.shape = "rect"
-        this.upgrade = "c"
+        this.upgrade = ""
 
         this.attachedBalls = []
 
@@ -20,16 +20,18 @@ export default class Player extends Obstacle{
     }
 
     click(){
-        this.attachedBalls.forEach(b => {
+        this.attachedBalls.forEach(info => {
+            let { ball } = info
             this.attachedBalls.pop()
-            b.disattach()
+            ball.disattach()
 
-            this.PushBall(b)
+            this.PushBall(ball)
         })
     }
 
     attachBall(ball){
-        this.attachedBalls.push(ball)
+        let diff = (this.x + this.w / 2) - ball.x
+        this.attachedBalls.push({ball, diff})
         ball.attach()
     }
 
@@ -39,7 +41,7 @@ export default class Player extends Obstacle{
     }
 
     setDefaultPos(){
-        this.x = window.innerWidth / 2
+        this.x = window.innerWidth / 2 - this.w / 2
         this.y = window.innerHeight - 50
     }
 
@@ -75,10 +77,11 @@ export default class Player extends Obstacle{
     }
 
     Update(obstacles){
-        this.attachedBalls.forEach(b => {
-            let mp = this.getMiddlePos(b)
-            b.x = mp.x
-            b.y = mp.y
+        this.attachedBalls.forEach(info => {
+            let {ball, diff} = info
+            let mp = this.getMiddlePos(ball)
+            ball.x = mp.x - diff
+            ball.y = mp.y
         })
     }
 
@@ -100,5 +103,9 @@ export default class Player extends Obstacle{
 
     Life_pu(){
         this.lifes += 1
+    }
+
+    Control_pu(){
+        this.upgrade = "c"
     }
 }

@@ -8,7 +8,7 @@ export default class Upgrade{
         this.w = UPGRADE_W
         this.h = UPGRADE_H
         this.alive = true
-        this.type = "e"
+        this.type = "c"
     }
 
     isAlive(){
@@ -35,6 +35,11 @@ export default class Upgrade{
 
     Destroy(player){
         // mejorar player
-        player.Extend_pu()
+        if(this.type === "c"){
+            player.Control_pu()
+        }
+        else if(this.type === "e"){
+            player.Extend_pu()
+        }
     }
 }
