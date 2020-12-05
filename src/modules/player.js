@@ -6,7 +6,25 @@ export default class Player extends Obstacle{
         this.w = 100
         this.h = 20
         this.shape = "rect"
+        this.upgrade = "c"
+
+        this.attachedBalls = []
+
         this.Init()
+    }
+
+    click(){
+        this.attachedBalls.forEach(b => {
+            this.attachedBalls.pop()
+            b.disattach()
+
+            this.PushBall(b)
+        })
+    }
+
+    attachBall(ball){
+        this.attachedBalls.push(ball)
+        ball.attach()
     }
 
     Init() {
@@ -20,6 +38,15 @@ export default class Player extends Obstacle{
     }
 
     Collide(ball) {
+        if(this.upgrade === "c"){
+            this.attachBall(ball)
+        }
+        else if (this.upgrade === ""){
+            this.PushBall(ball)
+        }
+    }
+
+    PushBall(ball){
         let pos_central = this.x + this.w / 2
         let diff_pos = pos_central - ball.x
         let porc_diff = diff_pos * 100 / (this.w / 2)

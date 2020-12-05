@@ -5,16 +5,25 @@ import { circleRect, descomponerMov, hCollide, lineCircle, wCollide } from'./tri
 export default class Ball{
     constructor(){
         this.alive = true
-        this.still = true
         this.ang = 30
         this.vel = 9
         this.x = 0
         this.y = 0
         this.r = 5
+
+        this.attached = false
+    }
+
+    disattach(){
+        this.attached = false
+    }
+
+    attach(){
+        this.attached = true
     }
 
     Update(player, obstacles){
-        if(this.still){
+        if(this.attached){
             this.x = player.x + player.w / 2
             this.y = player.y - this.r
         }
@@ -110,6 +119,6 @@ export default class Ball{
     }
 
     click(){
-        this.still = false;
+        this.attached = false;
     }
 }

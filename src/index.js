@@ -18,13 +18,14 @@ $( document ).ready(() => {
 function Start(){
     player = new Player()
     balls.push(new Ball());
+    player.attachBall(balls[0])
     makeMap()
     canvas.addEventListener("mousemove", e => {
         let mouse = {x: e.clientX, y: e.clientY}
         player.Move(mouse)
     })
     canvas.addEventListener("mousedown", e => {
-        balls.forEach(ball => ball.click())
+        player.click()
     })
     Update()
 }
@@ -94,6 +95,7 @@ function Update(){
     if(balls.length <= 0) {
         player.Die()
         balls.push(new Ball())
+        player.attachBall(balls[0])
     }
     if(!player.isAlive()) {
         player.Init()
