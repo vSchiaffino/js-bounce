@@ -44,7 +44,11 @@ export default class Block extends Obstacle{
         else{
             ball.ang = wCollide(ball.ang)
         }
-        --this.hp;
+        this.getDamaged(1)
+    }
+
+    getDamaged(dmg){
+        this.hp -= dmg;
         if(this.hp <= 0){
             this.Die()
         }
@@ -55,9 +59,9 @@ export default class Block extends Obstacle{
     }
 
     Destroy(map, upgrades){
-        if(Math.random() * 5 >= 4){
-            upgrades.push(new Upgrade({x: this.x + this.w / 2, y: this.y + this.h / 2}))
-        }
+        // if(Math.random() * 5 >= 4){
+        //     upgrades.push(new Upgrade({x: this.x + this.w / 2, y: this.y + this.h / 2}))
+        // }
     }
 
     Die(){

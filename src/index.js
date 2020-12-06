@@ -5,6 +5,7 @@ import Ball from './modules/ball.js';
 import Player from './modules/player.js'
 var player;
 var balls = [];
+var proyectiles = [];
 var map = [];
 var upgrades = [];
 var canvas;
@@ -25,7 +26,7 @@ function Start(){
         player.Move(mouse)
     })
     canvas.addEventListener("mousedown", e => {
-        player.click()
+        player.click(proyectiles)
     })
     Update()
 }
@@ -59,10 +60,16 @@ function Update(){
     balls.forEach(ball => {
         ball.Update(player, MakeObstacles())
     })
+    proyectiles.forEach(p => {
+        p.Update(map.flat())
+    })
     upgrades.forEach(u => {
         u.Update(player)
     })
     // draws
+    proyectiles.forEach(p => {
+        p.Draw(ctx)
+    })
     balls.forEach(ball => {
         ball.Draw(ctx)
     })
@@ -73,7 +80,6 @@ function Update(){
         u.Draw(ctx)
     })
     player.Draw(ctx)
-
     // garbage collector
     // balls
     balls = balls.filter(ball => ball.isAlive())
@@ -96,6 +102,17 @@ function Update(){
             return false
         }
     })
+    // proyectiles
+    proyectiles = proyectiles.filter(p => {
+        if(p.isAlive()){
+            return true
+        }
+        else{
+            p.Destroy(proyectiles)
+            return false
+        }
+    })
+
     // Game state
     if(balls.length <= 0) {
         player.Die()

@@ -41,5 +41,8 @@ export default class Upgrade{
         else if(this.type === "e"){
             player.Extend_pu()
         }
+        else if(this.type === "l"){
+            player.Laser_pu()
+        }
     }
 }
