@@ -14,3 +14,5 @@ export const LASER_OFFSET = 5
 export const LASER_W = 3
 export const LASER_H = 20
 export const LASER_V = 15
+export const LASER_RELOAD = 250
+

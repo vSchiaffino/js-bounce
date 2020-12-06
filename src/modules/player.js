@@ -1,4 +1,4 @@
-import { LASER_OFFSET } from "./constants.js"
+import { LASER_OFFSET, LASER_RELOAD } from "./constants.js"
 import Laser from "./laser.js"
 import Obstacle from "./obstacle.js"
 
@@ -9,6 +9,7 @@ export default class Player extends Obstacle{
         this.h = 20
         this.shape = "rect"
         this.upgrade = ""
+        this.readyToShoot = true
 
         this.attachedBalls = []
 
@@ -31,10 +32,14 @@ export default class Player extends Obstacle{
         })
 
         if(this.upgrade === "l") {
-            let x1 = this.x + LASER_OFFSET
-            let x2 = this.x + this.w - LASER_OFFSET
-            proyectiles.push(new Laser({x: x1, y: this.y}))
-            proyectiles.push(new Laser({x: x2, y: this.y}))
+            if(this.readyToShoot){
+                let x1 = this.x + LASER_OFFSET
+                let x2 = this.x + this.w - LASER_OFFSET
+                proyectiles.push(new Laser({x: x1, y: this.y}))
+                proyectiles.push(new Laser({x: x2, y: this.y}))
+                this.readyToShoot = false
+                setTimeout(() => this.readyToShoot = true, LASER_RELOAD)
+            }
         }
     }
 
@@ -52,7 +57,7 @@ export default class Player extends Obstacle{
     setDefaultPos(){
         this.x = window.innerWidth / 2 - this.w / 2
         this.y = window.innerHeight - 50
-        this.upgrade = ""
+        this.upgrade = "l"
     }
 
     Collide(ball) {
