@@ -1,3 +1,4 @@
+import Ball from "./ball.js";
 import { MAP_HEIGHT, MAP_WIDTH } from "./constants.js";
 import getBlock from "./helpers.js";
 import Obstacle from "./obstacle.js";
@@ -24,6 +25,9 @@ export default class Block extends Obstacle{
         if(Math.random() * 10 <= 2){
             this.destroyEffect = "e"
         }
+        else if(Math.random() * 10 <= 2){
+            this.destroyEffect = "b"
+        }
         else{
             this.destroyEffect = ""
         }
@@ -44,7 +48,9 @@ export default class Block extends Obstacle{
     Draw(ctx){
         if(this.destroyEffect === "e"){
             ctx.fillStyle = "magenta"
-
+        }
+        else if(this.destroyEffect === "b"){
+            ctx.fillStyle = "blue"
         }
         else{
             ctx.fillStyle = "red"
@@ -77,7 +83,7 @@ export default class Block extends Obstacle{
         return this.alive
     }
 
-    Destroy(map, upgrades){
+    Destroy(map, upgrades, balls){
         // if(Math.random() * 5 >= 4){
         //     upgrades.push(new Upgrade({x: this.x + this.w / 2, y: this.y + this.h / 2}))
         // }
@@ -103,6 +109,11 @@ export default class Block extends Obstacle{
                     let block = getBlock(i, j, map)
                     block?.Die()
                 })
+            }
+            if(this.destroyEffect === "b") {
+                let ang = Math.random() * 80 + 150
+                let pos = {x: this.x + this.w / 2, y: this.y + this.h / 2};
+                balls.push(new Ball(ang, pos))
             }
         }
 

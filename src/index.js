@@ -88,7 +88,7 @@ function Update(){
         if(block.isAlive())
             return true
         else{
-            block.Destroy(map, upgrades)
+            block.Destroy(map, upgrades, balls)
             return false
         }
     })

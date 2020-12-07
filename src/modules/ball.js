@@ -3,12 +3,12 @@ import { fillCircle } from "./draws.js"
 import { circleRect, descomponerMov, hCollide, lineCircle, wCollide } from'./trigonometria.js'
 
 export default class Ball{
-    constructor(){
+    constructor(ang, pos){
         this.alive = true
-        this.ang = 30
+        this.ang = ang || 0
         this.vel = 9
-        this.x = innerWidth / 2
-        this.y = 0
+        this.x = pos?.x || innerWidth / 2
+        this.y = pos?.y || 0
         this.r = 5
 
         this.attached = false
