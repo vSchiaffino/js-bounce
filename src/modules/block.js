@@ -1,4 +1,5 @@
 import { MAP_HEIGHT, MAP_WIDTH } from "./constants.js";
+import getBlock from "./helpers.js";
 import Obstacle from "./obstacle.js";
 import { hCollide, lineCircle, wCollide } from './trigonometria.js'
 import Upgrade from "./upgrade.js";
@@ -12,8 +13,20 @@ export default class Block extends Obstacle{
         this.w = window.innerWidth / MAP_WIDTH
         this.h = window.innerHeight / MAP_HEIGHT
 
+        this.i = x
+        this.j = y
+
         this.x = x * this.w
         this.y = y * this.h
+
+        this.upgrade = ""
+
+        if(Math.random() * 10 <= 2){
+            this.destroyEffect = "e"
+        }
+        else{
+            this.destroyEffect = ""
+        }
 
         this.hp = 1
         this.alive = true
@@ -29,7 +42,13 @@ export default class Block extends Obstacle{
     }
 
     Draw(ctx){
-        ctx.fillStyle = "red"
+        if(this.destroyEffect === "e"){
+            ctx.fillStyle = "magenta"
+
+        }
+        else{
+            ctx.fillStyle = "red"
+        }
         ctx.strokeStyle = "orange"
         ctx.fillRect(this.x, this.y, this.w, this.h)
         ctx.strokeRect(this.x, this.y, this.w, this.h)
@@ -62,6 +81,31 @@ export default class Block extends Obstacle{
         // if(Math.random() * 5 >= 4){
         //     upgrades.push(new Upgrade({x: this.x + this.w / 2, y: this.y + this.h / 2}))
         // }
+        if(this.upgrade != "") {
+            upgrades.push(new Upgrade({x: this.x + this.w / 2, y: this.y + this.h / 2}, this.upgrade))
+        }
+        if(this.destroyEffect != "") {
+            if(this.destroyEffect === "e") {
+                let blocksMovToDestruct = [
+                    [1, 0],
+                    [1, 1],
+                    [0, 1],
+                    [-1, 1],
+                    [-1, 0],
+                    [-1, -1],
+                    [0, -1],
+                    [1, -1],
+                ]
+                blocksMovToDestruct.forEach(mov => {
+                    let [movx, movy] = mov
+                    let i = this.i + movx,
+                        j = this.j + movy;
+                    let block = getBlock(i, j, map)
+                    block?.Die()
+                })
+            }
+        }
+
     }
 
     Die(){

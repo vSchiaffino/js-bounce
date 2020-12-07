@@ -2,13 +2,13 @@ import { FALL_VELOCITY, UPGRADE_COLOR, UPGRADE_H, UPGRADE_W } from "./constants.
 import { rectRect } from "./trigonometria.js"
 
 export default class Upgrade{
-    constructor(pos){
+    constructor(pos, type){
         this.x = pos.x
         this.y = pos.y
         this.w = UPGRADE_W
         this.h = UPGRADE_H
         this.alive = true
-        this.type = "c"
+        this.type = type
     }
 
     isAlive(){

@@ -57,7 +57,6 @@ export default class Player extends Obstacle{
     setDefaultPos(){
         this.x = window.innerWidth / 2 - this.w / 2
         this.y = window.innerHeight - 50
-        this.upgrade = "l"
     }
 
     Collide(ball) {
