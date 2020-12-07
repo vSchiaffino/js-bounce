@@ -1,4 +1,3 @@
-import Map from './map.js'
 import Player from './player.js'
 import Ball from './ball.js'
 import Block from './block.js'
@@ -9,15 +8,34 @@ export default class Game{
         this.canvas = canvas
 
         this.map = []
+        this._makeMap()
+        this.player = new Player()
+        this.balls = []
+        this._makeBall()
+        this.proyectiles = []
+        this.upgrades = []
+    }
+
+    _restart(){
+        this._makeMap()
+        this.player.restart()
+        this._makeBall()
+    }
+
+    _makeBall(){
+        this.balls.push(new Ball())
+        this.player.attachBall(this.balls[0])
+    }
+
+    _makeMap(){
+        for (let i = 0; i < this.map.length; i++) {
+            this.map.pop()
+        }
         for (let i = 0; i < MAP_WIDTH; i++) {
             for (let j = 0; j < 10; j++) {
                 this.map.push(new Block(i, j))
             }
         }
-        this.player = new Player()
-        this.balls = []
-        this.proyectiles = []
-        this.upgrades = []
     }
 
     Move(mouse){
@@ -95,11 +113,10 @@ export default class Game{
     CheckGameState(){
         if(this.balls.length <= 0) {
             this.player.Die()
-            this.balls.push(new Ball())
-            this.player.attachBall(this.balls[0])
+            this._makeBall()
         }
         if(!this.player.isAlive()) {
-            // TODO
+            this._restart()
         }
     }
 

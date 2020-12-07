@@ -8,12 +8,15 @@ export default class Player extends Obstacle{
         this.w = 100
         this.h = 20
         this.shape = "rect"
-        this.upgrade = ""
+        this.restart()
+    }
+
+    restart(){
+        this.setDefaultPos()
+        this.lifes = 3
         this.readyToShoot = true
-
+        this.upgrade = ""
         this.attachedBalls = []
-
-        this.Init()
     }
 
     getMiddlePos(circle){
@@ -47,11 +50,6 @@ export default class Player extends Obstacle{
         let diff = (this.x + this.w / 2) - ball.x
         this.attachedBalls.push({ball, diff})
         ball.attach()
-    }
-
-    Init() {
-        this.lifes = 3
-        this.setDefaultPos()
     }
 
     setDefaultPos(){
